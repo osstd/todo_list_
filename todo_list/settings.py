@@ -1,3 +1,4 @@
+import dj_database_url
 import os
 from pathlib import Path
 
@@ -11,7 +12,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.environ.get('K')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = 'RENDER' not in os.environ
 
 ALLOWED_HOSTS = []
 
@@ -65,16 +66,22 @@ WSGI_APPLICATION = 'todo_list.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
+# Render route
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': os.environ.get('DB_N'),
-        'USER': os.environ.get('DB_U'),
-        'PASSWORD': os.environ.get('DB_PA'),
-        'HOST': os.environ.get('DB_H'),
-        'PORT': os.environ.get('DB_PO')
-    }
+    "default": dj_database_url.parse(os.environ.get('DATABASE_URL'))
 }
+
+# AWS RDS route
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
+#         'NAME': os.environ.get('DB_N'),
+#         'USER': os.environ.get('DB_U'),
+#         'PASSWORD': os.environ.get('DB_PA'),
+#         'HOST': os.environ.get('DB_H'),
+#         'PORT': os.environ.get('DB_PO')
+#     }
+# }
 
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
